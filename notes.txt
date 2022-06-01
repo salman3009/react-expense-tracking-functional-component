@@ -1,0 +1,6 @@
+Step1:
+copy the bootstrap link and script inside our project --->public-->index.html
+Step2:
+copy the global.css and paste inside our project-------> app.css 
+Step3:
+to change the class to className---->Ctrl+F ------->Ctrl+H -----> second icons
