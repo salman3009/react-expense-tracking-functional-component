@@ -1,9 +1,11 @@
 
 import './Register.css';
-import {Link} from 'react-router-dom';
+import {Link,useNavigate} from 'react-router-dom';
 import {useState} from 'react';
 import {emailValidation,passwordValidation}  from '../Validation';
 function Register(){
+
+  const navigate = useNavigate();
 
     const[getForm,setForm]=useState({
       firstName:'',
@@ -25,29 +27,17 @@ function Register(){
     }
 
     const onSubmitHandler=(event)=>{
-        event.preventDefault();
+        event.preventDefault(); 
         setValidation({
-          email:'',
-          password:''
+          ...getValidation,email:!emailValidation(getForm.email)?"please provide email":'',
+          password:!passwordValidation(getForm.password)?"Please provide the password":''
         });
         if(emailValidation(getForm.email) && passwordValidation(getForm.password)){
           alert("success");
           sessionStorage.setItem("email",getForm.email);
           sessionStorage.setItem("password",getForm.password);
+          navigate('/login');
         }
-        else{
-             if(!emailValidation(getForm.email)){
-               setValidation({
-                 ...getValidation,email:"Please provide proper email"
-               })
-             }
-             if(!passwordValidation(getForm.password)){
-              setValidation({
-                ...getValidation,password:"Please provide proper password"
-              })
-            }
-        }
-
     }
 
 
@@ -71,12 +61,17 @@ function Register(){
                       <div className="form-group">
                         <label>Email address</label>
                         <input type="email"  onChange={onChangeHandler} value={getForm.email} className="form-control" id="email" name="email" placeholder="Enter email"/>
+                        {getValidation.email && <div class="alert alert-danger" role="alert">
                         {getValidation.email}
+</div> }
                       </div>
                       <div className="form-group">
                         <label>Password</label>
                         <input type="password" onChange={onChangeHandler} value={getForm.password} className="form-control" id="password" name="password" placeholder="Password"/>
+                       
+                        {getValidation.password && <div class="alert alert-danger" role="alert">
                         {getValidation.password}
+</div>}
                       </div>
                   
                       <button onClick={onSubmitHandler} type="submit" className="btn btn-success">Submit</button>
