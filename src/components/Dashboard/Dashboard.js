@@ -1,6 +1,16 @@
 import './Dashboard.css';
 import {Link} from 'react-router-dom';
+import { useEffect,useState } from 'react';
 const Dashboard=()=>{
+
+  const[getList,setList] =  useState([]);
+
+     useEffect(()=>{
+            if(JSON.parse(sessionStorage.getItem('expenseDetails')) && JSON.parse(sessionStorage.getItem('expenseDetails')).length>0){
+               setList(JSON.parse(sessionStorage.getItem('expenseDetails')))
+            }
+     },[])
+
     return (<div>
        <div className="container-fluid">
               <div className="row">
@@ -36,60 +46,27 @@ const Dashboard=()=>{
                           </tr>
                         </thead>
                         <tbody>
-                          <tr>
-                            <th scope="row">1</th>
-                            <td>Travel</td>
-                            <td>2000</td>
-                            <td>salman</td>
-                            <td>29/02/2022</td>
+             
+                        {getList.map((obj,index)=>{
+                           return(<tr key={index}>
+                            <th scope="row">{index+1}</th>
+                            <td>{obj.expenseName}</td>
+                            <td>{obj.amount}</td>
+                            <td>{obj.paidBy}</td>
+                            <td>{obj.date}</td>
                             <td><i  data-toggle="modal" data-target="#edit" className="fa fa-pencil-square-o" aria-hidden="true"></i></td>
                             <td><i className="fa fa-trash" aria-hidden="true"></i></td>
                           </tr>
-                          <tr>
-                            <th scope="row">1</th>
-                            <td>Travel</td>
-                            <td>2000</td>
-                            <td>salman</td>
-                            <td>29/02/2022</td>
-                            <td><i className="fa fa-pencil-square-o" aria-hidden="true"></i></td>
-                            <td><i className="fa fa-trash" aria-hidden="true"></i></td>
-                          </tr>
-                          <tr>
-                            <th scope="row">1</th>
-                            <td>Travel</td>
-                            <td>2000</td>
-                            <td>salman</td>
-                            <td>29/02/2022</td>
-                            <td><i className="fa fa-pencil-square-o" aria-hidden="true"></i></td>
-                            <td><i className="fa fa-trash" aria-hidden="true"></i></td>
-                          </tr>
-                          <tr>
-                            <th scope="row">1</th>
-                            <td>Travel</td>
-                            <td>2000</td>
-                            <td>salman</td>
-                            <td>29/02/2022</td>
-                            <td><i className="fa fa-pencil-square-o" aria-hidden="true"></i></td>
-                            <td><i className="fa fa-trash" aria-hidden="true"></i></td>
-                          </tr>
-                          <tr>
-                            <th scope="row">1</th>
-                            <td>Travel</td>
-                            <td>2000</td>
-                            <td>salman</td>
-                            <td>29/02/2022</td>
-                            <td><i className="fa fa-pencil-square-o" aria-hidden="true"></i></td>
-                            <td><i className="fa fa-trash" aria-hidden="true"></i></td>
-                          </tr>
-                          <tr>
-                            <th scope="row">1</th>
-                            <td>Travel</td>
-                            <td>2000</td>
-                            <td>salman</td>
-                            <td>29/02/2022</td>
-                            <td><i className="fa fa-pencil-square-o" aria-hidden="true"></i></td>
-                            <td><i className="fa fa-trash" aria-hidden="true"></i></td>
-                          </tr>
+
+                           )
+                        })
+
+                        }
+                        
+                        
+                 
+                 
+                
                        
                         </tbody>
                       </table>
@@ -99,7 +76,7 @@ const Dashboard=()=>{
           </div>
 
  
-          <div className="modal fade" id="edit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div className="modal fade" id="edit"  role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div className="modal-dialog" role="document">
       <div className="modal-content">
         <div className="modal-header">
