@@ -5,6 +5,8 @@ const Dashboard=()=>{
 
   const[getList,setList] =  useState([]);
   const[getIndex,setIndex]=useState(-1);
+  const[getSearch,setSearch]=useState('');
+
   const[getExpense,setExpense]=useState({
     expenseName:'',
     amount:'',
@@ -41,6 +43,10 @@ const Dashboard=()=>{
       })
     }
 
+    const onChangeSearchHandler=(event)=>{
+      setSearch(event.target.value);
+    }
+
 
     const onEditSubmitHandler=(event)=>{
       event.preventDefault();
@@ -53,6 +59,22 @@ const Dashboard=()=>{
       sessionStorage.setItem('expenseDetails',JSON.stringify(expenseDetails));
     }
 
+    const searchFilter=(event)=>{
+      event.preventDefault();
+      let details = getList.filter((obj)=>{
+        return obj.expenseName === getSearch; 
+      })
+      setList(details);
+    }
+
+    const resetFilter=(event)=>{
+        event.preventDefault();
+        setSearch('');
+        if(JSON.parse(sessionStorage.getItem('expenseDetails')) && JSON.parse(sessionStorage.getItem('expenseDetails')).length>0){
+          setList(JSON.parse(sessionStorage.getItem('expenseDetails')))
+       }
+    }
+
     return (<div>
        <div className="container-fluid">
               <div className="row">
@@ -60,10 +82,11 @@ const Dashboard=()=>{
                     <form>        
                         <div className="form-group">
                           <label>Expense name</label>
-                          <input type="email" className="form-control" id="email" placeholder="Enter email"/>
+                          <input type="text" value={getSearch} onChange={onChangeSearchHandler} className="form-control" id="expenseName" name="searchExpenseName" placeholder="Enter expenseName"/>
                         
                         </div>       
-                        <button type="submit" className="btn btn-success">Search</button>
+                        <button onClick={searchFilter} type="submit" className="btn btn-success">Search</button>
+                        <button onClick={resetFilter}>Reset</button>
                       </form>
                 </div>
                 <div className="col-7"></div>
